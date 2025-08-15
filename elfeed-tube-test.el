@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (require 'ert)
 (require 'elfeed-tube)
 
@@ -49,7 +50,7 @@ Tube with mpv."
 
 (ert-deftest elfeed-tube--persist-test ()
   "Test if data is persistent as expected."
-  (skip-unless (equal system-name "t14"))
+  (skip-unless (equal (system-name) "t14"))
   (cl-loop for id in '(("www.youtube.com" . "yt:video:_bJeKUosqoY")
                        ("www.youtube.com" . "yt:video:SSg3T0aK-ck")
                        ("www.youtube.com" . "yt:video:swLyst02ZK4"))

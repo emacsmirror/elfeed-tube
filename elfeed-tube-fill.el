@@ -167,7 +167,7 @@ Videos not already present will be added to the Elfeed database."
           (aio-await (aio-sleep 0.8 nil))))
 
     (run-at-time 1.5 nil
-                 (lambda () 
+                 (lambda ()
                    (advice-remove elfeed-search-header-function
                                   #'elfeed-tube--fill-header)
                    (setf elfeed-tube--fill-header nil)))))

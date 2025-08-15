@@ -865,7 +865,9 @@ This does the following:
 (declare-function elfeed-tube--invidious-fetch-desc "elfeed-tube-invidious")
 
 (defun elfeed-tube--fetch-desc (entry &optional existing attempts)
-  "Fetch metadata for ENTRY, try ATTEMPTS times."
+  "Fetch metadata for ENTRY, try ATTEMPTS times.
+
+Reuse EXISTING data, if available."
   (when (eq elfeed-tube-backend 'yt-dlp) (require 'elfeed-tube-ytdlp))
   (pcase-exhaustive elfeed-tube-backend
     ('youtube (elfeed-tube--youtube-fetch-desc entry existing attempts))

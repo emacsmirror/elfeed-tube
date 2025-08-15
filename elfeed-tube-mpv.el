@@ -96,7 +96,7 @@ C-mouse-1: open at %s (mpv, new instance)
                  "&t=[0-9.]*" "" s))
               (list (mpv-get-property "path")
                     video-url)))
-    ('error nil)))
+    (error nil)))
 
 (defsubst elfeed-tube-mpv--set-timer (entry)
   "Start mpv position update timer for ENTRY."
@@ -228,7 +228,7 @@ This function is intended to be run on a timer when
                   (move-overlay elfeed-tube-mpv--overlay
 				(save-excursion (beginning-of-visual-line) (point))
 				(save-excursion (end-of-visual-line) (point))))))
-	  ('error nil))))))
+	  (error nil))))))
 
 (defun elfeed-tube-mpv--where-internal (mpv-time)
   "Return the point in the Elfeed buffer that corresponds to time MPV-TIME."

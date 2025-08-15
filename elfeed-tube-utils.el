@@ -30,11 +30,25 @@
 (defvar elfeed-tube--invidious-api-videos-path)
 (defvar elfeed-tube--max-retries)
 (defvar elfeed-tube-use-ytdlp-p)
+(defvar elfeed-tube-fields)
+(defvar elfeed-tube-captions-faces)
 
 
 (defvar elfeed-tube--max-retries 2)
 
+(defvar elfeed-tube-channels-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-k") (lambda () (interactive) (quit-window 'kill-buffer)))
+    map))
+
 ;;; Helpers
+
+(eval-when-compile
+  (if (fboundp 'ensure-list)
+      (defalias 'elfeed-tube--ensure-list 'ensure-list)
+    (defun elfeed-tube--ensure-list (object)
+      "Ensure that OBJECT is a list."
+      (if (listp object) object (list object)))))
 
 (defsubst elfeed-tube-include-p (field)
   "Check if FIELD should be fetched."
@@ -466,11 +480,6 @@ afterwards."
                do (elfeed-add-feed feed :save t)))
     (message "Added to elfeed-feeds.")
     (when arg (elfeed))))
-
-(defvar elfeed-tube-channels-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-k") (lambda () (interactive) (quit-window 'kill-buffer)))
-    map))
 
 (define-derived-mode elfeed-tube-channels-mode tabulated-list-mode
   "Elfeed Tube Channels"

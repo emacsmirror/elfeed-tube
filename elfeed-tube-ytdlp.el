@@ -42,8 +42,7 @@
 
 (defconst elfeed-tube--ytdlp-thumb-sizes
   '(large 480 medium 360 small 188)
-  "Mapping from elfeed-tube thumbnail sizes to standard yt-dlp
-thumbnail image heights")
+  "Map elfeed-tube thumbnail sizes to standard yt-dlp sizes.")
 
 (aio-defun elfeed-tube--ytdlp-fetch (url)
   "Return a hash table of the JSON dump as retrieved by yt-dlp.
@@ -52,7 +51,7 @@ URL is the video id or url.  The data is cached in a global hash
 table."
   (unless (executable-find "yt-dlp")
     (user-error
-     "Could not find yt-dlp executable. Please install yt-dlp or add to path."))
+     "Could not find yt-dlp executable. Please install yt-dlp or add to path"))
   (let* ((yt-proc
           (start-process
            "yt-dlp" (get-buffer-create url)
@@ -72,17 +71,14 @@ table."
       (kill-buffer url))))
 
 (defun elfeed-tube--ytdlp-get-chapters (chapter-data)
-  "Convert list of hashtables of chapter information obtained from
-yt-dlp JSON dump into alist format consumed by the rest of
-elfeed-tube."
+  "Convert CHAPTER-DATA to timestamp+title pairs."
   (cl-loop for chapter in chapter-data
            for title = (plist-get chapter :title)
            for start = (number-to-string (floor (plist-get chapter :start_time)))
            collect (cons start title)))
 
 (defun elfeed-tube--ytdlp-get-thumb (thumb-data)
-  "Take list of hashtables of video thumbnails obtained from yt-dlp
-json dump and return the url for the thumbnail of required size."
+  "Get thumbnail url from THUMB-DATA."
   (cl-loop with height = (plist-get elfeed-tube--ytdlp-thumb-sizes
                                     elfeed-tube-thumbnail-size)
            for thumb-plist across thumb-data
