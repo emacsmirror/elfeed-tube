@@ -422,7 +422,16 @@ buffer."
                                     ((capstr (elfeed-deref
                                               (elfeed-meta entry :caps))))
                                   (condition-case nil
-                                      (read capstr)
+                                      (let ((parsed (read capstr)))
+                                        (if (cl-some (lambda (el) (not (consp el)))
+                                                     (cddr parsed))
+                                            (progn ;guard against corrupted DB data (#51)
+                                              (elfeed-tube-log
+                                               'warn
+                                               "[Show][Captions] Corrupt data in DB (truncated by print-length), discarding")
+                                              (setf (elfeed-meta entry :caps) nil)
+                                              nil)
+                                          parsed))
                                     (error
                                      (elfeed-tube-log
                                       'error "[Show][Captions] DB parse error: %S"
