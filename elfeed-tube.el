@@ -832,6 +832,7 @@ This does the following:
       (when (and elfeed-tube-captions-sblock-p sblock)
         (setq parsed-caps (elfeed-tube--sblock-captions sblock parsed-caps)))
       (when (and elfeed-tube-captions-puntcuate-p
+                 language
                  (string-match-p "auto-generated" language))
         (elfeed-tube--npreprocess-captions parsed-caps))
       parsed-caps)))
