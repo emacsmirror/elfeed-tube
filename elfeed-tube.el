@@ -305,7 +305,9 @@ paragraphs or sections. It must be a positive integer."
       (elfeed-tube--with-db elfeed-tube--captions-db-dir
         (setf (elfeed-meta entry :caps)
               (when-let ((caption (elfeed-tube-item-caps data-item)))
-                (elfeed-ref (prin1-to-string caption))))))
+                (elfeed-ref (let ((print-length nil)
+                                  (print-level nil))
+                              (prin1-to-string caption)))))))
     (elfeed-tube-log 'info "[DB][Wrote to DB][video:%s]"
                      (elfeed-tube--truncate (elfeed-entry-title entry)))
     t))
