@@ -64,8 +64,8 @@
 
 (defsubst elfeed-tube--youtube-p (entry)
   "Check if ENTRY is a Youtube video entry."
-  (string-match-p elfeed-tube-youtube-regexp
-                  (elfeed-entry-link entry)))
+  (and-let* ((link (elfeed-entry-link entry)))
+    (string-match-p elfeed-tube-youtube-regexp link)))
 
 (defsubst elfeed-tube--url-video-id (url)
   "Get YouTube video URL's video-id."
