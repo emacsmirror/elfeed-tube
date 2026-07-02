@@ -585,17 +585,16 @@ is a plist of video metadata."
                                  "title,author,authorUrl,published,videoId")
                          #'elfeed-tube--nrotate-invidious-servers)))))
                    (feed-id (concat "https://www.youtube.com/feeds/videos.xml?channel_id="
-                                    (nth 1 (split-string (plist-get api-data :authorUrl)
-                                                         "/" t))))
-                   (author `((:name ,(plist-get api-data :author) :uri ,feed-id)))
-                   (entry (elfeed-tube--entry-create feed-id api-data))
-                   ((symbol-function 'elfeed-entry-feed)
-                    (lambda (_)
-                      (elfeed-feed--create
-                       :id feed-id
-                       :url feed-id
-                       :title (plist-get api-data :author)
-                       :author author))))
+                                    (plist-get api-data :authorUrl)))
+                   (author `((:name ,(plist-get api-data :author) :uri
+                                    ,(concat "https://www.youtube.com/channel/"
+                                             (plist-get api-data :authorUrl)))))
+                   (feed (let ((f (elfeed-db-get-feed feed-id)))
+                           (setf (elfeed-feed-url f) feed-id
+                                 (elfeed-feed-title f) (plist-get api-data :author)
+                                 (elfeed-feed-author f) author)
+                           f))
+                   (entry (elfeed-tube--entry-create feed-id api-data)))
           (aio-await (elfeed-tube--fetch-1 entry force-fetch api-data-full))
           (with-selected-window (elfeed-show-entry entry)
             (message "Summary created for video: \"%s\""
