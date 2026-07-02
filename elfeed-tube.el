@@ -243,6 +243,13 @@ paragraphs or sections. It must be a positive integer."
      (clientName . "ANDROID")
      (clientVersion . "20.10.38"))))
 
+;; TODO: Update innertube-context to:
+;; (clientName . "WEB")
+;; (clientVersion . "2.20260623.01.00")
+;;
+;; This API version provides the correct publishedAt dates, but it does not
+;; include links to caption tracks.
+
 (defconst elfeed-tube--innertube-api-url
   "https://www.youtube.com/youtubei/v1/player")
 
